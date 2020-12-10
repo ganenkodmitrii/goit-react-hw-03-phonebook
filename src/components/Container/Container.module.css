@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    justify-content: space-around;
+    min-height: 625px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
