@@ -18,6 +18,21 @@ class App extends Component {
         filter: '',
     };
 
+    componentDidMount() {
+        const contacts = localStorage.getItem('contacts');
+        const parsedContacts = JSON.parse(contacts);
+        if (parsedContacts) {
+            this.setState({ contacts: parsedContacts });
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        const { contacts } = this.state;
+        if (contacts !== prevState.contacts) {
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+        }
+    }
+
     handleSubmit = (name, number) => {
         const validationError = this.validateContact(name, number);
         if (validationError) {
@@ -25,9 +40,9 @@ class App extends Component {
         } else {
             this.setState(prevState => ({
                 contacts: prevState.contacts.concat({
+                    id: uuidv4(),
                     name,
                     number,
-                    id: uuidv4(),
                 }),
             }));
         }
@@ -67,11 +82,11 @@ class App extends Component {
             ),
         }));
     };
+
     render() {
         const { filter } = this.state;
 
         const visibleContacts = this.getVisibleContacts();
-
         return (
             <Container>
                 <Section title="Phonebook">
